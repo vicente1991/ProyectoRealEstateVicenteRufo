@@ -1,4 +1,7 @@
 package com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.repository;
 
-public interface PropietarioRepository {
+import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.model.Propietario;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface PropietarioRepository extends JpaRepository<Propietario,Long> {
 }

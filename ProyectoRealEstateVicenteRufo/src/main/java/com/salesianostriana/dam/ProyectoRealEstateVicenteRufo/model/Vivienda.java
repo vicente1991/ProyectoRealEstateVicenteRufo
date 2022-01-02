@@ -42,6 +42,10 @@ public class Vivienda implements Serializable {
     @JoinColumn(name = "inmobiliaria_id")
     private Inmobiliaria inmobiliaria;
 
+    @Column(name = "TipoVivienda")
+    @Enumerated(EnumType.STRING)
+    private TipoVivienda tipoVivienda;
+
     @ManyToOne
     @JoinColumn(name = "propietario_id")
     private Propietario propietario;

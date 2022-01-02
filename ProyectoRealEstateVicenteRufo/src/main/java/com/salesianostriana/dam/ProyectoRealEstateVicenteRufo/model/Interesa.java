@@ -20,4 +20,8 @@ public class Interesa {
     @JoinColumn(name = "vivienda_id")
     private Vivienda vivienda;
 
+    @ManyToOne
+    @JoinColumn(name = "interesado_id")
+    private Interesado interesado;
+
 }

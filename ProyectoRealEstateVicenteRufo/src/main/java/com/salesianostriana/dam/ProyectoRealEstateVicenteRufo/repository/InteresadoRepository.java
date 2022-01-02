@@ -1,4 +1,7 @@
 package com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.repository;
 
-public interface InteresadoRepository {
+import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.model.Interesado;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface InteresadoRepository extends JpaRepository<Interesado,Long> {
 }
