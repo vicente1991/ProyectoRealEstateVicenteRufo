@@ -22,4 +22,6 @@ public class Propietario extends Persona {
     private List<Vivienda> viviendaList= new ArrayList<>();
 
 
+    public Propietario(String nombre, String apellidos, String telefono, String avatar, String email, List<String> viviendaList) {
+    }
 }

@@ -33,4 +33,6 @@ public class Inmobiliaria implements Serializable {
     @OneToMany(mappedBy = "inmobiliaria",fetch = FetchType.EAGER)
     private List<Vivienda> vivienda= new ArrayList<>();
 
+    public Inmobiliaria(String nombre, String email, String telefono) {
+    }
 }
