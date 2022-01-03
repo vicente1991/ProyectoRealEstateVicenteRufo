@@ -3,16 +3,15 @@ package com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.model;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor @AllArgsConstructor
 @Getter @Setter @SuperBuilder
+@EntityListeners(AuditingEntityListener.class)
 public class Interesa {
 
     @Builder.Default
@@ -20,10 +19,12 @@ public class Interesa {
     private InteresaPK id= new InteresaPK();
 
     @ManyToOne
+    @MapsId("vivienda_id")
     @JoinColumn(name = "vivienda_id")
     private Vivienda vivienda;
 
     @ManyToOne
+    @MapsId("interesado_id")
     @JoinColumn(name = "interesado_id")
     private Interesado interesado;
 

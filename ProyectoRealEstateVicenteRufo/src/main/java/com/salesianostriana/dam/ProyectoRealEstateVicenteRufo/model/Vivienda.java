@@ -2,11 +2,31 @@ package com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.model;
 
 
 import lombok.*;
+import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+@NamedEntityGraph(
+        name = "grafo-vivienda-inmobiliaria-propietario",
+        attributeNodes = {
+                @NamedAttributeNode("inmobiliaria"),
+                @NamedAttributeNode("propietario")
+        },
+        subgraphs = {
+                @NamedSubgraph(
+                        name = "grafo-vivienda-inmobiliaria",
+                        attributeNodes = {@NamedAttributeNode("inmobiliaria")}
+                ),
+                @NamedSubgraph(
+                        name = "grafo-vivienda-propietario",
+                        attributeNodes = {@NamedAttributeNode("propietario")}
+                )
+        }
+)
+
 
 @Entity
 @NoArgsConstructor @AllArgsConstructor
@@ -17,7 +37,7 @@ public class Vivienda implements Serializable {
     @GeneratedValue
     private Long id;
 
-    private String titulo,descripcion,avatar,latlng;
+    private String titulo,descripcion,direccion,avatar,latlng,poblacion,provincia;
     private double precio,mCuadrados;
 
     @Column(name = "codigoPostal")
@@ -48,10 +68,43 @@ public class Vivienda implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "propietario_id")
+    @JsonIgnore
     private Propietario propietario;
 
     @Builder.Default
     @OneToMany(mappedBy = "vivienda")
     private List<Interesa> interesaList= new ArrayList<>();
+
+
+
+    ///HELPERS///
+
+    public void addToInmobiliaria(Inmobiliaria i){
+        inmobiliaria = i;
+        if (i.getVivienda() == null){
+            i.setVivienda(new ArrayList<>());
+            i.getVivienda().add(this);
+        }
+    }
+
+    public void removeFromInmobiliaria(Inmobiliaria i) {
+        i.getVivienda().remove(this);
+        inmobiliaria = null;
+    }
+
+    public void addPropietario(Propietario p){
+        this.propietario = p;
+        p.getViviendaList().add(this);
+    }
+
+    public void removePropietario(Propietario p) {
+        p.getViviendaList().remove(this);
+        this.propietario = null;
+    }
+
+    @PreRemove
+    public void removeViviendasToIntereses(){
+        interesaList.forEach(interesa -> interesa.setVivienda(null));
+    }
 
 }

@@ -12,7 +12,7 @@ import java.util.List;
 @NamedEntityGraph(
         name = Inmobiliaria.INMOBILIARIA_CON_VIVIENDA,
         attributeNodes = {
-                @NamedAttributeNode("viviendas")
+                @NamedAttributeNode("vivienda")
         }
 )
 
@@ -29,7 +29,6 @@ public class Inmobiliaria implements Serializable {
 
     private String nombre,email, telefono;
 
-    @Builder.Default
     @OneToMany(mappedBy = "inmobiliaria",fetch = FetchType.EAGER)
     private List<Vivienda> vivienda= new ArrayList<>();
 

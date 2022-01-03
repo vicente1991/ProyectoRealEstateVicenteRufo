@@ -13,33 +13,26 @@ public abstract class BaseService<T, ID, R extends JpaRepository<T,ID>> {
     @Autowired
     protected R repository;
 
-    public List<T> findAll() {
+    public List<T> findAll(){
         return repository.findAll();
     }
-
-    public Optional<T> findById(ID id) {
+    public Page<T> findAll(Pageable pageable){return repository.findAll(pageable);}
+    public Optional<T> findById(ID id){
         return repository.findById(id);
     }
-
-    public T getById(ID id) { return repository.getById(id); }
-
-    public T save(T t) {
+    public T save(T t){
         return repository.save(t);
     }
-
-    public T edit(T t) {
-        return save(t);
+    public T edit(T t){
+        return repository.save(t);
     }
-
-    public void delete(T t) {
+    public void delete(T t){
         repository.delete(t);
     }
-
-    public Page<T> findAll(Pageable pageable){
-        return repository.findAll(pageable);
-    }
-
-    public void deleteById(ID id) {
+    public void deleteById(ID id){
         repository.deleteById(id);
+    }
+    public List<T> saveAll(Iterable<T> iterable){
+        return repository.saveAll(iterable);
     }
 }

@@ -2,11 +2,12 @@ package com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.dto.inmobiliaria;
 
 
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @Data
 @Getter @Setter
 @NoArgsConstructor @AllArgsConstructor
-@Builder
+@SuperBuilder
 public class GetInmobiliariaDTO {
 
     private Long id;
