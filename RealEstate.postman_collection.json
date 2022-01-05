@@ -58,7 +58,36 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": null
+						"url": {
+							"raw": "localhost:8080/inmobiliaria/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"inmobiliaria",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Borrar una inmobiliaria",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/inmobiliaria/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"inmobiliaria",
+								"1"
+							]
+						}
 					},
 					"response": []
 				}
@@ -66,11 +95,108 @@
 		},
 		{
 			"name": "Propietario",
-			"item": []
+			"item": [
+				{
+					"name": "Obtener un propietario",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/propietario/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"propietario",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener todos los propietarios",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/propietario/",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"propietario",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Borrar un propietario",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/propietario/",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"propietario",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		},
 		{
 			"name": "Interesado",
-			"item": []
+			"item": [
+				{
+					"name": "Obtener todos los interesados",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/interesado/",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"interesado",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener un interesado",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/interesado/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"interesado",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		},
 		{
 			"name": "Vivienda",
