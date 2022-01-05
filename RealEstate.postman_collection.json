@@ -1,0 +1,80 @@
+{
+	"info": {
+		"_postman_id": "15f21ca7-626f-4ee0-a831-e7d0c282a852",
+		"name": "RealEstate",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Inmobiliaria",
+			"item": [
+				{
+					"name": "Obtener todas las Inmobiliarias",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/inmobiliaria",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"inmobiliaria"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener todas las Inmobiliarias Copy",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\":\"inmoLuismi\",\r\n    \"telefono\": \"123456789\",\r\n    \"email\": \"inmoLuismi@blabla.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/inmobiliaria",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"inmobiliaria"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener una Inmobiliaria",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": null
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Propietario",
+			"item": []
+		},
+		{
+			"name": "Interesado",
+			"item": []
+		},
+		{
+			"name": "Vivienda",
+			"item": []
+		}
+	]
+}
