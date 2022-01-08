@@ -23,6 +23,7 @@ public abstract class BaseService<T, ID, R extends JpaRepository<T,ID>> {
     public T save(T t){
         return repository.save(t);
     }
+    public T getById(ID id) { return repository.getById(id); }
     public T edit(T t){
         return repository.save(t);
     }

@@ -10,7 +10,6 @@ import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.model.Inmobiliaria
 import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.model.Interesa;
 import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.model.Interesado;
 import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.model.Vivienda;
-import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.paginacion.PaginationLinksUtil;
 import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.services.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -69,6 +68,23 @@ public class ViviendaController {
     }
 
     @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Se crea una vivienda con éxito",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Vivienda.class))}),
+            @ApiResponse(responseCode = "400",
+                    description = "La estructura de la petición estaba mal formulada",
+                    content = @Content)
+    })
+    @PostMapping("/")
+    public ResponseEntity<Vivienda> createVivienda(@RequestBody Vivienda v){
+        if(!propietarioService.findById(v.getPropietario().getId()).isPresent()){
+            propietarioService.save(v.getPropietario());
+        }return ResponseEntity.status(HttpStatus.CREATED)
+                .body(viviendaService.save(v));
+    }
+
+    @ApiResponses(value = {
             @ApiResponse(responseCode = "201",
                     description = "Se ha creado el interesado y el interesa asociado a una vivienda",
                     content = { @Content(mediaType = "application/json",
@@ -95,24 +111,35 @@ public class ViviendaController {
                 .body(interesadoService.save(in));
 
     }
-
-
-
+    @Operation(summary = "Crea un interesa asociado a una vivienda y a un interesado")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200",
-                    description = "Se crea una vivienda con éxito",
-                    content = {@Content(mediaType = "application/json",
+            @ApiResponse(responseCode = "201",
+                    description = "Se ha creado el interesa asociado a una vivienda y a un interesado",
+                    content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = Vivienda.class))}),
             @ApiResponse(responseCode = "400",
-                    description = "La estructura de la petición estaba mal formulada",
-                    content = @Content)
+                    description = "No se ha creado el interesa",
+                    content = @Content),
     })
-    @PostMapping("/")
-    public ResponseEntity<Vivienda> createVivienda(@RequestBody Vivienda v){
-        if(!propietarioService.findById(v.getPropietario().getId()).isPresent()){
-            propietarioService.save(v.getPropietario());
-        }return ResponseEntity.status(HttpStatus.CREATED)
-                .body(viviendaService.save(v));
+    @PostMapping("/{id}/meInteresa/{id2}")
+    public ResponseEntity<Interesa> create(@PathVariable Long id1,@RequestBody GetInteresaDTO interesadto,@PathVariable Long id2){
+
+        if(viviendaService.findById(id1).isEmpty()){
+            return ResponseEntity.notFound().build();
+        }else{
+            Interesa interesa = interesaConverterDTO.createInteresaDTOinInteresa(interesadto);
+            Interesado interesado= interesadoService.getById(id2);
+            Vivienda vivienda= viviendaService.getById(id1);
+            interesa.addVivienda(vivienda);
+            interesa.addInteresado(interesado);
+            Interesa inte = interesaService.save(interesa);
+
+            return ResponseEntity
+                    .status(HttpStatus.CREATED)
+                    .body(inte);
+
+
+        }
     }
 
     @Operation(summary = "Eliminación de una vivienda por su id.")
