@@ -16,4 +16,7 @@ public class GetInteresaDTO {
 
    private LocalDateTime dateTime;
    private String mensaje;
+   private Long interesado_id;
+   private Long vivienda_id;
+   private GetInteresadoDTO interesadoDTO;
 }

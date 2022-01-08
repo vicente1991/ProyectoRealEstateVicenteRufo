@@ -2,15 +2,21 @@ package com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.dto.vivienda;
 
 
 import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.dto.inmobiliaria.InmobiliariaConverterDTO;
+import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.dto.interesa.GetInteresaDTO;
 import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.dto.interesa.InteresaConverterDTO;
 import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.dto.propietario.PropietarioConverterDTO;
 import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.model.Inmobiliaria;
+import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.model.Interesa;
 import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.model.TipoVivienda;
 import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.model.Vivienda;
 import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.services.InmobiliariaService;
 import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.services.PropietarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class ViviendaConverterDTO {

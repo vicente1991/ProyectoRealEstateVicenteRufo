@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 @Component
 public class InteresaConverterDTO {
 
+
     public Interesa createInteresaDTOinInteresa(GetInteresaDTO g){
         return Interesa.builder()
                 .creDateTime(LocalDateTime.now())
@@ -16,4 +17,6 @@ public class InteresaConverterDTO {
                 .build();
 
     }
+
+
 }

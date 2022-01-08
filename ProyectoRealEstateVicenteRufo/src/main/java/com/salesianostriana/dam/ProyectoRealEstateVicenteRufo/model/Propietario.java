@@ -5,10 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,5 +20,10 @@ public class Propietario extends Persona {
 
 
     public Propietario(String nombre, String apellidos, String telefono, String avatar, String email, List<String> viviendaList) {
+    }
+
+    @PreRemove
+    public void nullPropietarioDeViviendas(){
+        viviendaList.forEach(vivienda -> vivienda.setPropietario(null));
     }
 }

@@ -4,6 +4,7 @@ import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.dto.propietario.Ge
 import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.dto.propietario.GetPropietarioViviendaDTO;
 import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.dto.propietario.PropietarioConverterDTO;
 import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.model.Propietario;
+import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.repository.PropietarioRepository;
 import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.services.PropietarioService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -14,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -25,6 +27,7 @@ public class PropietarioController {
 
     private final PropietarioService propietarioService;
     private final PropietarioConverterDTO propietarioConverterDTO;
+
 
     @Operation(summary = "Borra un Propietario creado")
     @ApiResponses(value = {
@@ -85,4 +88,6 @@ public class PropietarioController {
             return ResponseEntity.ok().body(prop);
         }
     }
+
+
 }
