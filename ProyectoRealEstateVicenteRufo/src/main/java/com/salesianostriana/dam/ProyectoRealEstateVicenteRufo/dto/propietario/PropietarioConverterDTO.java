@@ -38,11 +38,7 @@ public class PropietarioConverterDTO {
     }
 
     public GetPropietarioViviendaDTO createPropietarioinPropietarioViviendaDTO(Propietario p){
-        List<String> direccion = new ArrayList<>();
 
-        for(int i=0; i<p.getViviendaList().size();i++){
-            direccion.add(p.getViviendaList().get(i).getTitulo());
-        }
         return GetPropietarioViviendaDTO.builder()
                 .id(p.getId())
                 .nombre(p.getNombre())
@@ -50,7 +46,6 @@ public class PropietarioConverterDTO {
                 .email(p.getEmail())
                 .telefono(p.getTelefono())
                 .direccion(p.getDireccion())
-                .direccionVivienda(direccion)
                 .build();
     }
 }

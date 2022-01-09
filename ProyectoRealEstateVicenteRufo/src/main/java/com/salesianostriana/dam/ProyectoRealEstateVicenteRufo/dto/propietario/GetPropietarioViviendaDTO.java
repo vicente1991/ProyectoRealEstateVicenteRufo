@@ -12,5 +12,5 @@ public class GetPropietarioViviendaDTO {
 
     private Long id;
     private String nombre,apellidos,email,direccion,telefono;
-    private List<String> direccionVivienda;
+
 }

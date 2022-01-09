@@ -4,12 +4,11 @@ import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.dto.interesa.GetIn
 import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.dto.interesa.GetInteresadoDTO;
 import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.dto.interesa.InteresaConverterDTO;
 import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.dto.interesa.InteresadoConverterDTO;
+import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.dto.propietario.PropietarioConverterDTO;
 import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.dto.vivienda.GetViviendaDTO;
+import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.dto.vivienda.GetViviendaPropietarioDTO;
 import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.dto.vivienda.ViviendaConverterDTO;
-import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.model.Inmobiliaria;
-import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.model.Interesa;
-import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.model.Interesado;
-import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.model.Vivienda;
+import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.model.*;
 import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.services.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -38,8 +37,8 @@ public class ViviendaController {
     private final InteresadoService interesadoService;
     private final InteresaService interesaService;
     private final InteresadoConverterDTO interesadoConverterDTO;
-    private final InteresaConverterDTO interesaConverterDTO;
     private final PropietarioService propietarioService;
+    private final InteresaConverterDTO interesaConverterDTO;
     private final ViviendaConverterDTO viviendaConverterDTO;
 
 
@@ -77,11 +76,22 @@ public class ViviendaController {
                     content = @Content)
     })
     @PostMapping("/")
-    public ResponseEntity<Vivienda> createVivienda(@RequestBody Vivienda v){
-        if(!propietarioService.findById(v.getPropietario().getId()).isPresent()){
-            propietarioService.save(v.getPropietario());
-        }return ResponseEntity.status(HttpStatus.CREATED)
-                .body(viviendaService.save(v));
+    public ResponseEntity<GetViviendaPropietarioDTO> createVivienda(@RequestBody GetViviendaPropietarioDTO v){
+        Vivienda vivienda= viviendaConverterDTO.getViviendaPropietario(v);
+        Propietario propietario= viviendaConverterDTO.getPropietarioVivienda(v);
+        if(v.getTitulo().isEmpty()){
+            return ResponseEntity.badRequest().build();
+        }else{
+            if(propietario.getId()!=null)
+                propietario= propietarioService.findById(propietario.getId()).get();
+            propietarioService.save(propietario);
+            vivienda.addPropietario(propietario);
+            viviendaService.save(vivienda);
+
+            GetViviendaPropietarioDTO vp = viviendaConverterDTO.createViviendaPropietarioDTO(vivienda);
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(vp);
+        }
     }
 
     @Operation(summary = "Conseguir una vivienda")
@@ -122,9 +132,8 @@ public class ViviendaController {
         if(viviendaService.findById(id).isEmpty()){
             return ResponseEntity.notFound().build();
         }else{
-            viviendaService.findById(id).get().removeViviendasToIntereses();
-            viviendaService.findById(id);
-            return ResponseEntity.notFound().build();
+            viviendaService.deleteById(id);
+            return ResponseEntity.noContent().build();
         }
     }
 
@@ -138,30 +147,30 @@ public class ViviendaController {
                     content = @Content),
     })
     @PutMapping("/{id}")
-    public ResponseEntity<Vivienda> edit(@RequestBody Vivienda v,@PathVariable Long id){
+    public ResponseEntity<?> edit(@RequestBody GetViviendaDTO v,@PathVariable Long id){
         if (viviendaService.findById(id).isEmpty()) {
             return ResponseEntity.notFound().build();
         }else{
             return ResponseEntity.of(
                     viviendaService.findById(id).map(mod ->{
+                        mod.setId(v.getId());
                         mod.setTitulo(v.getTitulo());
                         mod.setDescripcion(v.getDescripcion());
                         mod.setDireccion(v.getDireccion());
                         mod.setAvatar(v.getAvatar());
                         mod.setCodigoPostal(v.getCodigoPostal());
                         mod.setLatlng(v.getLatlng());
-                        mod.setNBanios(v.getNBanios());
-                        mod.setMCuadrados(v.getMCuadrados());
-                        mod.setNHabitaciones(v.getNHabitaciones());
+                        mod.setNumBanios(v.getNumBanos());
+                        mod.setMCuadrados(v.getMetrosCuadrados());
                         mod.setProvincia(v.getProvincia());
                         mod.setPoblacion(v.getPoblacion());
                         mod.setPrecio(v.getPrecio());
-                        mod.setTipoVivienda(v.getTipoVivienda());
+                        mod.setTipoVivienda(v.getTipo());
                         mod.setTienePiscina(v.isTienePiscina());
                         mod.setTieneGaraje(v.isTieneGaraje());
                         mod.setTieneAscensor(v.isTieneAscensor());
                         viviendaService.save(mod);
-                        return mod;
+                        return v;
                     })
             );
         }
@@ -177,7 +186,7 @@ public class ViviendaController {
                     content = @Content),
     })
     @PostMapping("/{id}/meinteresa")
-    public ResponseEntity<Interesado> createInteresado(@RequestBody GetInteresadoDTO interesadodto, GetInteresaDTO interesadto ,@PathVariable Long id){
+    public ResponseEntity<GetInteresadoDTO> createInteresado(@RequestBody GetInteresadoDTO interesadodto, GetInteresaDTO interesadto ,@PathVariable Long id){
 
         Interesado in = interesadoConverterDTO.createInteresadoDTOinInteresado(interesadodto);
         Interesa interesa = interesaConverterDTO.createInteresaDTOinInteresa(interesadto);
@@ -188,10 +197,11 @@ public class ViviendaController {
 
         interesaService.save(interesa);
         in.getInteresaList().add(interesa);
+        interesadoService.save(in);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(interesadoService.save(in));
+                .body(interesadoConverterDTO.createInteresadoDTOtoInteresado(in));
 
     }
     @Operation(summary = "Crea un interesa asociado a una vivienda y a un interesado")
@@ -204,8 +214,8 @@ public class ViviendaController {
                     description = "No se ha creado el interesa",
                     content = @Content),
     })
-    @PostMapping("/{id}/meInteresa/{id2}")
-    public ResponseEntity<Interesa> create(@PathVariable Long id1,@RequestBody GetInteresaDTO interesadto,@PathVariable Long id2){
+    @PostMapping("/{id1}/meinteresa/{id2}")
+    public ResponseEntity<GetInteresadoDTO> create(@PathVariable Long id1,@RequestBody GetInteresaDTO interesadto,@PathVariable Long id2){
 
         if(viviendaService.findById(id1).isEmpty()){
             return ResponseEntity.notFound().build();
@@ -215,11 +225,11 @@ public class ViviendaController {
             Vivienda vivienda= viviendaService.getById(id1);
             interesa.addVivienda(vivienda);
             interesa.addInteresado(interesado);
-            Interesa inte = interesaService.save(interesa);
+            interesaService.save(interesa);
 
             return ResponseEntity
                     .status(HttpStatus.CREATED)
-                    .body(inte);
+                    .body(interesadoConverterDTO.createInteresadoDTOtoInteresado(interesado));
 
 
         }

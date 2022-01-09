@@ -1,5 +1,7 @@
 package com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.controller;
 
+import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.dto.interesa.GetInteresadoDTO;
+import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.dto.interesa.InteresadoConverterDTO;
 import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.model.Interesado;
 import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.services.InteresadoService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,6 +25,7 @@ import java.util.List;
 public class InteresadoController {
 
     private final InteresadoService interesadoService;
+    private final InteresadoConverterDTO interesadoConverterDTO;
 
     @Operation(summary = "Obtiene todos los interesado")
     @ApiResponses(value = {
@@ -34,12 +38,16 @@ public class InteresadoController {
                     content = @Content),
     })
     @GetMapping("/")
-    public ResponseEntity<List<Interesado>> findAll(){
+    public ResponseEntity<List<GetInteresadoDTO>> findAll(){
         if(interesadoService.findAll().isEmpty()){
             return ResponseEntity.notFound().build();
         }else{
-            return ResponseEntity.ok().body(interesadoService.findAll());
+             List<GetInteresadoDTO> list= interesadoService.findAll().stream()
+                     .map(interesadoConverterDTO::createInteresadoDTOtoInteresado)
+                     .collect(Collectors.toList());
+            return ResponseEntity.ok().body(list);
         }
+
     }
 
 
@@ -55,12 +63,12 @@ public class InteresadoController {
                     content = @Content),
     })
     @GetMapping("/{id}")
-    public ResponseEntity findOne(@PathVariable Long id){
+    public ResponseEntity<GetInteresadoDTO> findOne(@PathVariable Long id){
 
         if(interesadoService.findById(id).isEmpty()){
             return ResponseEntity.notFound().build();
         }else{
-            return ResponseEntity.of(interesadoService.findById(id));
+            return ResponseEntity.ok().body(interesadoConverterDTO.createInteresadoDTOtoInteresado(interesadoService.findById(id).get()));
         }
     }
 }

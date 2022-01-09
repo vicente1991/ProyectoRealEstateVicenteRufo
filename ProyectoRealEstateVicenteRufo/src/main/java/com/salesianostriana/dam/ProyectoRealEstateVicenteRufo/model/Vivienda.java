@@ -44,10 +44,10 @@ public class Vivienda implements Serializable {
     private String codigoPostal;
 
     @Column(name = "nHabitaciones")
-    private int nHabitaciones;
+    private double numHabitaciones;
 
     @Column(name = "nBanios")
-    private int nBanios;
+    private double numBanios;
 
     @Column(name = "tienePiscina")
     private boolean tienePiscina;

@@ -1,41 +1,37 @@
 package com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.dto.vivienda;
 
 
-import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.dto.inmobiliaria.InmobiliariaConverterDTO;
-import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.dto.interesa.GetInteresaDTO;
-import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.dto.interesa.InteresaConverterDTO;
 import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.dto.propietario.PropietarioConverterDTO;
-import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.model.Inmobiliaria;
-import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.model.Interesa;
-import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.model.TipoVivienda;
-import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.model.Vivienda;
+import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.model.*;
 import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.services.InmobiliariaService;
 import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.services.PropietarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Component
 public class ViviendaConverterDTO {
 
-    private final InteresaConverterDTO interesaConverterDTO = new InteresaConverterDTO();
-    private final PropietarioConverterDTO propietarioConverterDTO = new PropietarioConverterDTO();
-    private final InmobiliariaConverterDTO inmobiliariaConverterDTO = new InmobiliariaConverterDTO();
+
     @Autowired
     private final InmobiliariaService inmobiliariaService;
     @Autowired
     private final PropietarioService propietarioService;
+    @Autowired
+    private final PropietarioConverterDTO propietarioConverterDTO;
 
-    public ViviendaConverterDTO(InmobiliariaService inmobiliariaService, PropietarioService propietarioService) {
+    TipoVivienda tipo= TipoVivienda.ALQUILER;
+
+    public ViviendaConverterDTO(InmobiliariaService inmobiliariaService, PropietarioService propietarioService, PropietarioConverterDTO propietarioConverterDTO) {
         this.inmobiliariaService = inmobiliariaService;
         this.propietarioService = propietarioService;
+        this.propietarioConverterDTO = propietarioConverterDTO;
     }
+
 
     public GetViviendaDTO createViviendainViviendaDto(Vivienda v){
         return GetViviendaDTO.builder()
+                .id(v.getId())
+                .titulo(v.getTitulo())
                 .poblacion(v.getPoblacion())
                 .provincia(v.getProvincia())
                 .avatar(v.getAvatar())
@@ -43,13 +39,15 @@ public class ViviendaConverterDTO {
                 .descripcion(v.getDescripcion())
                 .direccion(v.getDireccion())
                 .latlng(v.getLatlng())
+                .numHabitaciones(v.getNumHabitaciones())
                 .metrosCuadrados(v.getMCuadrados())
-                .numBanos(v.getNBanios())
+                .numBanos(v.getNumBanios())
                 .precio(v.getPrecio())
                 .tieneAscensor(v.isTieneAscensor())
                 .tieneGaraje(v.isTieneGaraje())
                 .tienePiscina(v.isTienePiscina())
-                .tipo(v.getTipoVivienda().getTipo())
+                .propietario(propietarioConverterDTO.createPropietarioinPropietarioDTO(v.getPropietario()))
+                .tipo(v.getTipoVivienda())
                 .build();
     }
 
@@ -62,10 +60,13 @@ public class ViviendaConverterDTO {
         g.setProvincia(v.getProvincia());
         g.setPrecio(v.getPrecio());
         g.setId(v.getId());
+        g.setDescripcion(v.getDescripcion());
+        g.setCodigoPostal(v.getCodigoPostal());
         g.setAvatar(v.getAvatar());
+        g.setLatlng(v.getLatlng());
         g.setMetrosCuadrados(v.getMCuadrados());
-        g.setNumHabitaciones(v.getNHabitaciones());
-        g.setTipo(v.getTipoVivienda().toString());
+        g.setNumHabitaciones(v.getNumHabitaciones());
+        g.setTipo(v.getTipoVivienda());
         g.setMeInteresas(v.getInteresaList().size());
         g.setIdInmobiliaria(i.getId());
         g.setNombreInmo(i.getNombre());
@@ -89,9 +90,9 @@ public class ViviendaConverterDTO {
     v.setProvincia(c.getProvincia());
     v.setTipoVivienda(t);
     v.setPrecio(c.getPrecio());
-    v.setNHabitaciones(c.getNumHabitaciones());
+    v.setNumHabitaciones(c.getNumHabitaciones());
     v.setMCuadrados(c.getMCuadrados());
-    v.setNBanios(c.getNumBanios());
+    v.setNumBanios(c.getNumBanios());
     v.setTieneAscensor(c.isTieneAscensor());
     v.setTieneGaraje(c.isTieneGaraje());
     v.setTienePiscina(c.isTienePiscina());
@@ -100,6 +101,66 @@ public class ViviendaConverterDTO {
     return v;
     }
 
+    public Vivienda getViviendaPropietario (GetViviendaPropietarioDTO gv){
+        return Vivienda.builder()
+                .titulo(gv.getTitulo())
+                .descripcion(gv.getDescripcion())
+                .direccion(gv.getDireccion())
+                .codigoPostal(gv.getCodigoPostal())
+                .precio(gv.getPrecio())
+                .poblacion(gv.getPoblacion())
+                .provincia(gv.getProvincia())
+                .latlng(gv.getLatlng())
+                .tipoVivienda(tipo)
+                .mCuadrados(gv.getMetrosCuadrados())
+                .numBanios(gv.getNumBanios())
+                .numHabitaciones(gv.getNumHabitaciones())
+                .avatar(gv.getAvatar())
+                .tieneAscensor(gv.isTieneAscensor())
+                .tieneGaraje(gv.isTieneGaraje())
+                .tienePiscina(gv.isTienePiscina())
+                .build();
+    }
+
+    public Propietario getPropietarioVivienda (GetViviendaPropietarioDTO gv){
+        return Propietario.builder()
+                .id(gv.getId())
+                .nombre(gv.getNombre())
+                .apellidos(gv.getApellidos())
+                .email(gv.getEmail())
+                .telefono(gv.getTelefono())
+                .avatar(gv.getAvatar2())
+                .build();
+    }
+
+    public GetViviendaPropietarioDTO createViviendaPropietarioDTO (Vivienda v){
+        return GetViviendaPropietarioDTO
+                .builder()
+                .id(v.getId())
+                .descripcion(v.getDescripcion())
+                .avatar(v.getAvatar())
+                .direccion(v.getDireccion())
+                .codigoPostal(v.getCodigoPostal())
+                .numBanios(v.getNumBanios())
+                .numHabitaciones(v.getNumHabitaciones())
+                .provincia(v.getProvincia())
+                .poblacion(v.getPoblacion())
+                .titulo(v.getTitulo())
+                .codigoPostal(v.getCodigoPostal())
+                .tieneGaraje(v.isTieneGaraje())
+                .latlng(v.getLatlng())
+                .tipo(v.getTipoVivienda())
+                .tienePiscina(v.isTienePiscina())
+                .tieneAscensor(v.isTieneAscensor())
+                .metrosCuadrados(v.getMCuadrados())
+                .precio(v.getPrecio())
+                .nombre(v.getPropietario().getNombre())
+                .apellidos(v.getPropietario().getApellidos())
+                .email(v.getPropietario().getEmail())
+                .telefono(v.getPropietario().getTelefono())
+                .avatar2(v.getPropietario().getAvatar())
+                .build();
+    }
 
 }
 
