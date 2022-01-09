@@ -84,6 +84,89 @@ public class ViviendaController {
                 .body(viviendaService.save(v));
     }
 
+    @Operation(summary = "Conseguir una vivienda")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Se encuentra la vivienda por id",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Vivienda.class))}),
+            @ApiResponse(responseCode = "404",
+                    description = "No se ha encontrado la vivienda con el id proporcionado.",
+                    content = @Content),
+    })
+    @GetMapping("{id}")
+    public ResponseEntity<GetViviendaDTO> findOne(@PathVariable Long id){
+
+        Optional<Vivienda> v= viviendaService.findById(id);
+
+        if(v.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }else{
+            GetViviendaDTO viviendaDTO = viviendaConverterDTO.createViviendainViviendaDto(v.get());
+            return ResponseEntity.ok().body(viviendaDTO);
+        }
+    }
+
+    @Operation(summary = "Eliminación de una vivienda por su id.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204",
+                    description = "Borrar vivienda con éxito",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Vivienda.class))}),
+            @ApiResponse(responseCode = "404",
+                    description = "No se ha encontrado una vivienda con ese id.",
+                    content = @Content),})
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable Long id){
+
+        if(viviendaService.findById(id).isEmpty()){
+            return ResponseEntity.notFound().build();
+        }else{
+            viviendaService.findById(id).get().removeViviendasToIntereses();
+            viviendaService.findById(id);
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201",
+                    description = "Se ha modificado la vivienda seleccionada",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Vivienda.class))}),
+            @ApiResponse(responseCode = "400",
+                    description = "No se ha modificado la vivienda seleccionada",
+                    content = @Content),
+    })
+    @PutMapping("/{id}")
+    public ResponseEntity<Vivienda> edit(@RequestBody Vivienda v,@PathVariable Long id){
+        if (viviendaService.findById(id).isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }else{
+            return ResponseEntity.of(
+                    viviendaService.findById(id).map(mod ->{
+                        mod.setTitulo(v.getTitulo());
+                        mod.setDescripcion(v.getDescripcion());
+                        mod.setDireccion(v.getDireccion());
+                        mod.setAvatar(v.getAvatar());
+                        mod.setCodigoPostal(v.getCodigoPostal());
+                        mod.setLatlng(v.getLatlng());
+                        mod.setNBanios(v.getNBanios());
+                        mod.setMCuadrados(v.getMCuadrados());
+                        mod.setNHabitaciones(v.getNHabitaciones());
+                        mod.setProvincia(v.getProvincia());
+                        mod.setPoblacion(v.getPoblacion());
+                        mod.setPrecio(v.getPrecio());
+                        mod.setTipoVivienda(v.getTipoVivienda());
+                        mod.setTienePiscina(v.isTienePiscina());
+                        mod.setTieneGaraje(v.isTieneGaraje());
+                        mod.setTieneAscensor(v.isTieneAscensor());
+                        viviendaService.save(mod);
+                        return mod;
+                    })
+            );
+        }
+    }
+
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201",
                     description = "Se ha creado el interesado y el interesa asociado a una vivienda",
@@ -142,26 +225,7 @@ public class ViviendaController {
         }
     }
 
-    @Operation(summary = "Eliminación de una vivienda por su id.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "204",
-                    description = "Borrar vivienda con éxito",
-                    content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Vivienda.class))}),
-            @ApiResponse(responseCode = "404",
-                    description = "No se ha encontrado una vivienda con ese id.",
-                    content = @Content),})
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id){
 
-        if(viviendaService.findById(id).isEmpty()){
-            return ResponseEntity.notFound().build();
-        }else{
-            viviendaService.findById(id).get().removeViviendasToIntereses();
-            viviendaService.findById(id);
-            return ResponseEntity.notFound().build();
-        }
-    }
 
     @Operation(summary = "Eliminación de la inmobiliaria asociada a la vivienda según su id")
     @ApiResponses(value = {
@@ -190,27 +254,6 @@ public class ViviendaController {
         }
     }
 
-    @Operation(summary = "Conseguir una vivienda")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200",
-                    description = "Se encuentra la vivienda por id",
-                    content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Vivienda.class))}),
-            @ApiResponse(responseCode = "404",
-                    description = "No se ha encontrado la vivienda con el id proporcionado.",
-                    content = @Content),
-    })
-    @GetMapping("{id}")
-    public ResponseEntity<GetViviendaDTO> findOne(@PathVariable Long id){
 
-        Optional<Vivienda> v= viviendaService.findById(id);
-
-        if(v.isEmpty()){
-            return ResponseEntity.notFound().build();
-        }else{
-            GetViviendaDTO viviendaDTO = viviendaConverterDTO.createViviendainViviendaDto(v.get());
-            return ResponseEntity.ok().body(viviendaDTO);
-        }
-    }
 
 }
