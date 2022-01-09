@@ -18,5 +18,13 @@ public class InteresaConverterDTO {
 
     }
 
+    public GetInteresaDTO createInteresaDTOtoInteresa(Interesa g){
+        return GetInteresaDTO.builder()
+                .dateTime(LocalDateTime.now())
+                .mensaje(g.getMensaje())
+                .build();
+
+    }
+
 
 }

@@ -101,6 +101,9 @@ public class Vivienda implements Serializable {
         p.getViviendaList().remove(this);
         this.propietario = null;
     }
+    public void addInteresa(Interesa i){
+        this.interesaList.add(i);
+    }
 
     @PreRemove
     public void removeViviendasToIntereses(){
