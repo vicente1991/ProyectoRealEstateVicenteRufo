@@ -5,4 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface InteresaRepository extends JpaRepository<Interesa,Long> {
 
+    Interesa findByViviendaAndInteresado(Long id1,Long id2);
 }

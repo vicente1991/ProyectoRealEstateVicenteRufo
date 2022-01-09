@@ -5,6 +5,13 @@ import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.repository.Viviend
 import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.services.base.BaseService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ViviendaService extends BaseService<Vivienda,Long, ViviendaRepository> {
+
+    public List<Vivienda> findTopViviendas(){
+        return repository.top10ViviendasInteresas();
+    }
+
 }

@@ -224,7 +224,34 @@ public class ViviendaController {
 
         }
     }
-
+    @Operation(summary = "Se añade una inmobiliaria a una vivienda")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201",
+                    description = "Se añade la inmobiliaria en la vivienda",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Vivienda.class))}),
+            @ApiResponse(responseCode = "404",
+                    description = "No se encuentra la vivienda o la inmobiliaria",
+                    content = @Content),
+            @ApiResponse(responseCode = "400",
+                    description = "Los datos introducidos son erroneos",
+                    content = @Content)
+    })
+    @PostMapping("/{id1}/inmobiliaria/{id2}")
+    public ResponseEntity<?> addViviendaToInmobiliaria(@PathVariable Long id1,@PathVariable Long id2){
+        Optional<Vivienda> v= viviendaService.findById(id1);
+        Optional<Inmobiliaria> i= inmobiliariaService.findById(id2);
+        if(v.isEmpty() || i.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }else{
+            Vivienda vi= v.get();
+            Inmobiliaria inmo = i.get();
+            vi.addToInmobiliaria(inmo);
+            viviendaService.save(vi);
+            GetViviendaDTO viviendaDTO= viviendaConverterDTO.createViviendaToGetViviendaInmobiliariaDTO(vi,inmo);
+            return ResponseEntity.ok().body(viviendaDTO);
+        }
+    }
 
 
     @Operation(summary = "Eliminación de la inmobiliaria asociada a la vivienda según su id")
@@ -252,6 +279,43 @@ public class ViviendaController {
             viviendaService.save(v);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
+    }
+
+    @Operation(summary = "Elimina el interés de un interesado por una vivienda")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204",
+                    description = "Se ha eliminado el interés",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Vivienda.class))}),
+            @ApiResponse(responseCode = "404",
+                    description = "No se ha encontrado una vivienda con dicho id",
+                    content = @Content),
+    })
+    @DeleteMapping("/{id1}/meInteresa/{id2}")
+    public ResponseEntity<?> deleteInteresaToVivienda(@PathVariable Long id1,@PathVariable Long id2){
+        if(viviendaService.findById(id1).isEmpty() || interesadoService.findById(id2).isEmpty() || interesaService.findByInteresa(id1,id2)==null) {
+            return ResponseEntity.notFound().build();
+        }else {
+            interesaService.deleteInteresa(id1,id2);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+
+    }
+
+    @Operation(summary = "Obtiene un top de las 10 viviendas con más interesados")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Se han encontrado las viviendas",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Vivienda.class))})
+    })
+    @GetMapping("/top")
+    public ResponseEntity<List<GetViviendaDTO>> tops(@RequestParam("n") int n){
+        List<Vivienda> top= viviendaService.findTopViviendas();
+        List<GetViviendaDTO> list = top.stream()
+                .map(viviendaConverterDTO::createViviendainViviendaDto)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok().body(list);
     }
 
 
