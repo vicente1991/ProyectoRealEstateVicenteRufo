@@ -4,3 +4,7 @@ insert into INMOBILIARIA (id, nombre, email, telefono) values (NEXTVAL('hibernat
 
 insert into VIVIENDA (id, titulo, descripcion, avatar, latlng, direccion, poblacion, provincia, CODIGO_POSTAL, N_HABITACIONES, N_BANIOS, precio, M_CUADRADOS, TIPO_VIVIENDA, TIENE_PISCINA, TIENE_GARAJE, TIENE_ASCENSOR, PROPIETARIO_ID, INMOBILIARIA_ID) values (NEXTVAL('hibernate_sequence'), 'Casa Independiente', 'Una casa envidiable y exclusiva, equipada con lo último en tecnología moderna y comodidades', '/assets/img/viviendas/2.jpg', 42.2390986, '6417 Ilene Court', 'Galicia', 'Madrid', '597', 2, 1, 1660882.0, 195.65, 'OBRA_NUEVA', false, true, false, 1, 2);
 insert into VIVIENDA (id, titulo, descripcion, avatar, latlng, direccion, poblacion, provincia, CODIGO_POSTAL, N_HABITACIONES, N_BANIOS, precio, M_CUADRADOS, TIPO_VIVIENDA, TIENE_PISCINA, TIENE_GARAJE, TIENE_ASCENSOR, PROPIETARIO_ID, INMOBILIARIA_ID) values (NEXTVAL('hibernate_sequence'), 'Chalet adosado', 'Una casa de lujo junto al Mediterráneo donde encontrará el estilo de vida que se merece', '/assets/img/viviendas/1.jpg', 40.4869744, '79 Memorial Alley', 'Madrid', 'Baleares', '85791', true, 2, 3777658.92, 21.69, 'VENTA', true, true, true, 1, 2);
+
+insert into INTERESADO (id, nombre, apellidos, direccion, email, telefono, avatar) values (NEXTVAL('hibernate_sequence'), 'Rozalie', 'Aers', '4850 Porter Avenue', 'raers0@hexun.com', '946 587 3847', 'https://robohash.org/pariaturquaeratrerum.png?size=200x200&set=set1');
+
+insert into INTERESA (VIVIENDA_ID, INTERESADO_ID) values (4, 5);

@@ -215,7 +215,7 @@ public class ViviendaController {
                     content = @Content),
     })
     @PostMapping("/{id1}/meinteresa/{id2}")
-    public ResponseEntity<GetInteresaDTO> createInteresaVivienda(@PathVariable Long id1,@RequestBody GetInteresaDTO interesadto,@PathVariable Long id2){
+    public ResponseEntity<Interesa> createInteresaVivienda(@PathVariable Long id1,@RequestBody GetInteresaDTO interesadto,@PathVariable Long id2){
 
         if(viviendaService.findById(id1).isEmpty()){
             return ResponseEntity.notFound().build();
@@ -229,7 +229,7 @@ public class ViviendaController {
 
             return ResponseEntity
                     .status(HttpStatus.CREATED)
-                    .body(interesaConverterDTO.createInteresaDTOtoInteresa(create));
+                    .body(create);
 
 
         }
