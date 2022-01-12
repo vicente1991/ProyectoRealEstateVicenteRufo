@@ -12,7 +12,7 @@ public class GetViviendaPropietarioDTO {
     private Long id;
     private String titulo, descripcion, avatar;
     private String direccion, codigoPostal, provincia, poblacion, latlng;
-    private double numHabitaciones, numBanios;
+    private int numHabitaciones, numBanios;
     private double metrosCuadrados, precio;
     private TipoVivienda tipo;
 

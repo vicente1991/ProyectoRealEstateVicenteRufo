@@ -29,9 +29,9 @@ public class GetViviendaDTO {
     private String provincia;
     private TipoVivienda tipo;
     private double precio;
-    private double numHabitaciones;
+    private int numHabitaciones;
     private double metrosCuadrados;
-    private double numBanos;
+    private int numBanos;
     private boolean tienePiscina;
     private boolean tieneAscensor;
     private boolean tieneGaraje;

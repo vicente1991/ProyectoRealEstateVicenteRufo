@@ -81,6 +81,7 @@ public class ViviendaConverterDTO {
 
     Vivienda v = new Vivienda();
 
+    v.setId(c.getId());
     v.setTitulo(c.getTitulo());
     v.setDescripcion(c.getDescripcion());
     v.setAvatar(c.getAvatar());
@@ -93,8 +94,8 @@ public class ViviendaConverterDTO {
     v.setCodigoPostal(c.getCodigoPostal());
     v.setPrecio(c.getPrecio());
     v.setNumHabitaciones(c.getNumHabitaciones());
-    v.setMetrosCuadrados(c.getMCuadrados());
-    v.setNumBanos(c.getNumBanios());
+    v.setMetrosCuadrados(c.getMetrosCuadrados());
+    v.setNumBanos(c.getNumBanos());
     v.setTieneAscensor(c.isTieneAscensor());
     v.setTieneGaraje(c.isTieneGaraje());
     v.setTienePiscina(c.isTienePiscina());

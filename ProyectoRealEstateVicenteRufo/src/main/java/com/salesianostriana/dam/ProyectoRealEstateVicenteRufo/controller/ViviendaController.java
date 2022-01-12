@@ -69,7 +69,7 @@ public class ViviendaController {
     }
 
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200",
+            @ApiResponse(responseCode = "201",
                     description = "Se crea una vivienda con éxito",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = Vivienda.class))}),
@@ -320,8 +320,8 @@ public class ViviendaController {
                 .tipo(createViviendaDto.getTipo())
                 .direccion(createViviendaDto.getDireccion())
                 .numHabitaciones(createViviendaDto.getNumHabitaciones())
-                .metrosCuadrados(createViviendaDto.getMCuadrados())
-                .numBanos(createViviendaDto.getNumBanios())
+                .metrosCuadrados(createViviendaDto.getMetrosCuadrados())
+                .numBanos(createViviendaDto.getNumBanos())
                 .propietario(userDtoConverter.UserEntityToGetUserDto(user))
                 .build();
 

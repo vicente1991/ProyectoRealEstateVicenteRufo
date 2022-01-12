@@ -47,16 +47,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .and()
                 .authorizeRequests()
-
+                //AUTH
                 .antMatchers(HttpMethod.POST, "/auth/register/user").hasRole("ADMIN")
                 .antMatchers(HttpMethod.POST, "/auth/login").anonymous()
                 .antMatchers(HttpMethod.POST, "/auth/register/gestor").hasRole("ADMIN")
                 .antMatchers(HttpMethod.POST, "/auth/register/admin").hasRole("ADMIN")
-
+                //PROPIETARIO
                 .antMatchers(HttpMethod.GET, "/propietario/").authenticated()
                 .antMatchers(HttpMethod.GET, "/propietario/{id}").hasAnyRole("ADMIN","PROPIETARIO")
                 .antMatchers(HttpMethod.DELETE, "/propietario/{id}").hasAnyRole("ADMIN","PROPIETARIO")
-
+                //VIVIENDA
                 .antMatchers(HttpMethod.POST, "/vivienda/").hasAnyRole("PROPIETARIO","ADMIN")
                 .antMatchers(HttpMethod.GET, "/vivienda/").authenticated()
                 .antMatchers(HttpMethod.GET,"/vivienda/{id}").authenticated()
@@ -64,7 +64,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.DELETE, "/vivienda/{id}").hasAnyRole("ADMIN","PROPIETARIO")
                 .antMatchers(HttpMethod.POST, "/vivienda/{id}/inmobiliaria/{id2}").hasAnyRole("PROPIETARIO","ADMIN")
                 .antMatchers(HttpMethod.DELETE, "/vivienda/{id}/inmobiliaria/").hasAnyRole("ADMIN","GESTOR","PROPIETARIO")
-
+                //INMOBILIARIA
                 .antMatchers(HttpMethod.POST, "/inmobiliaria/").hasRole("ADMIN")
                 .antMatchers(HttpMethod.POST, "/inmobiliaria/{id}/gestor").hasAnyRole("GESTOR","ADMIN")
                 .antMatchers(HttpMethod.DELETE, "/inmobiliaria/gestor/{id}").hasAnyRole("GESTOR","ADMIN")
@@ -72,8 +72,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/inmobiliaria/").authenticated()
                 .antMatchers(HttpMethod.GET, "/inmobiliaria/{id}").authenticated()
                 .antMatchers(HttpMethod.DELETE, "/inmobiliaria/{id}").hasRole("ADMIN")
-
-                .antMatchers(HttpMethod.POST, "/vivienda/{id}/meinteresa").hasRole("PROPIETARIO")
+                //VIVIENDA CON INTERESA
+                .antMatchers(HttpMethod.POST, "/vivienda/{id}/meinteresa").hasAnyRole("PROPIETARIO","ADMIN")
                 .antMatchers(HttpMethod.DELETE, "/vivienda/{id}/meinteresa/").hasAnyRole("PROPIETARIO", "ADMIN")
                 .antMatchers(HttpMethod.GET, "/interesado/").hasRole("ADMIN")
                 .antMatchers(HttpMethod.GET, "/interesado/{id}").hasAnyRole("PROPIETARIO","ADMIN")

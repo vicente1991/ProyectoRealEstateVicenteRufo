@@ -16,11 +16,13 @@ public class InmobiliariaConverterDTO {
     }
 
     public GetInmobiliariaDTO inmobiliariaDTOToInmobiliaria(Inmobiliaria i){
-        return GetInmobiliariaDTO.builder()
-                .id(i.getId())
-                .nombre(i.getNombre())
-                .email(i.getEmail())
-                .telefono(i.getTelefono())
-                .build();
+                int numViviendas=i.getVivienda().size();
+                GetInmobiliariaDTO inmo= new GetInmobiliariaDTO();
+                inmo.setId(i.getId());
+                inmo.setNombre(i.getNombre());
+                inmo.setEmail(i.getEmail());
+                inmo.setTelefono(i.getTelefono());
+                inmo.setNumViviendas(numViviendas);
+                return inmo;
     }
 }

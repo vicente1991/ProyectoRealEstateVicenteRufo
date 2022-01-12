@@ -428,21 +428,59 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/vivienda/top/n?top=10",
+							"raw": "localhost:8080/vivienda/top?n=10",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
 								"vivienda",
-								"top",
-								"n"
+								"top"
 							],
 							"query": [
 								{
-									"key": "top",
+									"key": "n",
 									"value": "10"
 								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Agregar vivienda interesado",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\": \"UwU\",\r\n    \"apellidos\": \"muy UwU\",\r\n    \"direccion\":\"calle feliz\",\r\n    \"email\": \"UwU@gmail.com\",\r\n    \"telefono\": \"987654321\",\r\n    \"avatar\":\"NINGUNO\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/vivienda/2/meinteresa",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"vivienda",
+								"2",
+								"meinteresa"
 							]
 						}
 					},
@@ -480,6 +518,46 @@
 					"response": []
 				},
 				{
+					"name": "Crear un meinteresa a una vivienda con id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/vivienda/2/meinteresa/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"vivienda",
+								"2",
+								"meinteresa",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Borrar vivienda con inmo",
 					"request": {
 						"auth": {
@@ -504,6 +582,37 @@
 								"vivienda",
 								"2",
 								"inmobiliaria"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Borrar interesado de vivienda por id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/vivienda/2/meinteresa/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"vivienda",
+								"2",
+								"meinteresa",
+								"1"
 							]
 						}
 					},
@@ -778,6 +887,69 @@
 								"inmobiliaria",
 								"1",
 								"gestor"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Interesado",
+			"item": [
+				{
+					"name": "Obtener todos los interesados",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/interesado/",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"interesado",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener un interesado",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/interesado/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"interesado",
+								"1"
 							]
 						}
 					},

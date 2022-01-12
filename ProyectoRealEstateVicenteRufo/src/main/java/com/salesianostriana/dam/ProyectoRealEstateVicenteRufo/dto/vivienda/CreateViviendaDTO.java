@@ -12,10 +12,11 @@ import lombok.NoArgsConstructor;
 public class CreateViviendaDTO {
 
 
+    private Long id;
     private String titulo,descripcion,avatar,latlng,direccion,codigoPostal,poblacion,provincia;
     private TipoVivienda tipo;
     private double precio;
-    private int numHabitaciones,mCuadrados,numBanios;
+    private int numHabitaciones,metrosCuadrados,numBanos;
     private boolean tienePiscina,tieneAscensor,tieneGaraje;
     private GetPropietarioDTO propietario;
     private GetInmobiliariaDTO inmobiliaria;
