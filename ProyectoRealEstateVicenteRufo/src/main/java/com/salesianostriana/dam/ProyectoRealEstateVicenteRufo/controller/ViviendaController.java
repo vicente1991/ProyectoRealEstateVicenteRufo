@@ -143,9 +143,9 @@ public class ViviendaController {
             return ResponseEntity.notFound().build();
         }else{
             Vivienda vNew= new Vivienda();
-            vNew= viviendaConverterDTO.createViviendaDTOtoVivienda(v,user);
+            vNew= viviendaConverterDTO.edit(id,v,user).get();
             viviendaService.edit(vNew);
-            return ResponseEntity.status(HttpStatus.CREATED).body(vNew);
+            return ResponseEntity.status(HttpStatus.CREATED).body(viviendaConverterDTO.createViviendainViviendaDto(vNew));
         }
     }
 

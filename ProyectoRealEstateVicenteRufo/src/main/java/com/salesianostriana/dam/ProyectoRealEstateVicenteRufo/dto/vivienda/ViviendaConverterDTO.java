@@ -1,13 +1,17 @@
 package com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.dto.vivienda;
 
 
+import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.dto.propietario.PropietarioConverterDTO;
 import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.model.*;
 import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.services.InmobiliariaService;
 import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.services.PropietarioService;
+import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.services.ViviendaService;
 import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.users.dto.UserDtoConverter;
 import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.users.model.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.Optional;
 
 @Component
 public class ViviendaConverterDTO {
@@ -19,13 +23,19 @@ public class ViviendaConverterDTO {
     private final PropietarioService propietarioService;
     @Autowired
     private final UserDtoConverter userDtoConverter;
+    @Autowired
+    private final ViviendaService viviendaService;
+    @Autowired
+    private final PropietarioConverterDTO propietarioConverterDTO;
 
     TipoVivienda tipo= TipoVivienda.ALQUILER;
 
-    public ViviendaConverterDTO(InmobiliariaService inmobiliariaService, PropietarioService propietarioService, UserDtoConverter userDtoConverter) {
+    public ViviendaConverterDTO(InmobiliariaService inmobiliariaService, PropietarioService propietarioService, UserDtoConverter userDtoConverter, ViviendaService viviendaService, PropietarioConverterDTO propietarioConverterDTO) {
         this.inmobiliariaService = inmobiliariaService;
         this.propietarioService = propietarioService;
         this.userDtoConverter = userDtoConverter;
+        this.viviendaService = viviendaService;
+        this.propietarioConverterDTO = propietarioConverterDTO;
     }
 
 
@@ -102,6 +112,32 @@ public class ViviendaConverterDTO {
     v.setPropietario(user);
     return v;
     }
+
+    public Optional<Vivienda> edit(Long id, CreateViviendaDTO c,UserEntity user){
+        return viviendaService.findById(id).map(nuevo ->{
+            nuevo.setTitulo(c.getTitulo());
+            nuevo.setDescripcion(c.getDescripcion());
+            nuevo.setAvatar(c.getAvatar());
+            nuevo.setLatlng(c.getLatlng());
+            nuevo.setDireccion(c.getDireccion());
+            nuevo.setCodigoPostal(c.getCodigoPostal());
+            nuevo.setPoblacion(c.getPoblacion());
+            nuevo.setProvincia(c.getProvincia());
+            nuevo.setTipoVivienda(c.getTipo());
+            nuevo.setCodigoPostal(c.getCodigoPostal());
+            nuevo.setPrecio(c.getPrecio());
+            nuevo.setNumHabitaciones(c.getNumHabitaciones());
+            nuevo.setMetrosCuadrados(c.getMetrosCuadrados());
+            nuevo.setNumBanos(c.getNumBanos());
+            nuevo.setTieneAscensor(c.isTieneAscensor());
+            nuevo.setTieneGaraje(c.isTieneGaraje());
+            nuevo.setTienePiscina(c.isTienePiscina());
+            nuevo.setPropietario(user);
+            viviendaService.save(nuevo);
+            return nuevo;
+        });
+    }
+
 
     public Vivienda getViviendaPropietario (GetViviendaPropietarioDTO gv){
         return Vivienda.builder()
