@@ -1,6 +1,7 @@
 package com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.dto.interesa;
 
 
+import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.model.Interesa;
 import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.model.Interesado;
 import org.springframework.stereotype.Component;
 
@@ -31,6 +32,12 @@ public class InteresadoConverterDTO {
                 .telefono(in.getTelefono())
                 .avatar(in.getAvatar())
                 .direccion(in.getDireccion())
+                .build();
+    }
+
+    public GetInteresadoInteresViviendaDTO dto(Interesa in){
+        return GetInteresadoInteresViviendaDTO.builder()
+                .mensaje(in.getMensaje())
                 .build();
     }
 

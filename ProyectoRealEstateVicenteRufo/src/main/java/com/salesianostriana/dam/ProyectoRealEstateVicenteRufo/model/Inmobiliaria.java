@@ -1,6 +1,7 @@
 package com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.model;
 
 
+import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.users.model.UserEntity;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -32,6 +33,18 @@ public class Inmobiliaria implements Serializable {
     @OneToMany(mappedBy = "inmobiliaria",fetch = FetchType.EAGER)
     private List<Vivienda> vivienda= new ArrayList<>();
 
+    @OneToMany(mappedBy = "inmobiliaria",fetch = FetchType.EAGER)
+    private List<UserEntity> gestores= new ArrayList<>();
+
     public Inmobiliaria(String nombre, String email, String telefono) {
+    }
+
+
+    public void setGestoresNull(UserEntity user) {
+        gestores.forEach(gestor -> {
+            if (gestor.getId() == user.getId()) {
+                gestor.setInmobiliaria(null);
+            }
+        });
     }
 }

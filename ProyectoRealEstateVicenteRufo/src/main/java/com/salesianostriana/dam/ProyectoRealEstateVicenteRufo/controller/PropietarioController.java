@@ -6,18 +6,26 @@ import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.dto.propietario.Pr
 import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.model.Propietario;
 import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.repository.PropietarioRepository;
 import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.services.PropietarioService;
+import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.users.dto.GetUserDto;
+import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.users.dto.UserDtoConverter;
+import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.users.model.UserEntity;
+import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.users.model.UserRoles;
+import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.users.services.UserEntityService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
@@ -27,6 +35,8 @@ public class PropietarioController {
 
     private final PropietarioService propietarioService;
     private final PropietarioConverterDTO propietarioConverterDTO;
+    private final UserEntityService entityService;
+    private final UserDtoConverter userDtoConverter;
 
 
     @Operation(summary = "Borra un Propietario creado")
@@ -37,14 +47,13 @@ public class PropietarioController {
                             schema = @Schema(implementation = Propietario.class))})
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id){
-        if(propietarioService.findById(id).isEmpty()){
-            return ResponseEntity.notFound().build();
-        }else{
-            propietarioService.deleteById(id);
-
+    public ResponseEntity<?> delete(@PathVariable UUID id, @AuthenticationPrincipal UserEntity user){
+        UserEntity p= entityService.loadUserById(id);
+        if(p!=null && id.equals(user.getId()) || user.getUserRoles().equals(UserRoles.ADMIN)){
+            entityService.deleteById(id);
             return ResponseEntity.noContent().build();
         }
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 
     @Operation(summary = "Obtiene un Propietario creado")
@@ -55,15 +64,15 @@ public class PropietarioController {
                             schema = @Schema(implementation = Propietario.class))})
     })
     @GetMapping("/")
-    public ResponseEntity<List<GetPropietarioDTO>> findAll(){
+    public ResponseEntity<List<GetUserDto>> findAll(){
 
-        if(propietarioService.findAll().isEmpty()){
+        List<UserEntity> prop = entityService.loadUserByRole(UserRoles.PROPIETARIO);
+
+        if(prop.isEmpty()){
             return ResponseEntity.notFound().build();
         }else{
-            List<GetPropietarioDTO> list= propietarioService.findAll().stream()
-                    .map(propietarioConverterDTO::createPropietarioinPropietarioDTO)
-                    .collect(Collectors.toList());
-
+            List<UserEntity> u= prop.stream().collect(Collectors.toList());
+            List<GetUserDto> list= u.stream().map(userDtoConverter::UserEntityToGetUserDto).collect(Collectors.toList());
             return ResponseEntity.ok().body(list);
         }
     }
@@ -76,16 +85,13 @@ public class PropietarioController {
                             schema = @Schema(implementation = Propietario.class))})
     })
     @GetMapping("/{id}")
-    public ResponseEntity<List<GetPropietarioViviendaDTO>> findOne(@PathVariable Long id){
+    public ResponseEntity<GetUserDto> findOne(@PathVariable UUID id, @AuthenticationPrincipal UserEntity user){
 
-        Optional<Propietario> propietario= propietarioService.findById(id);
-        if(propietarioService.findById(id).isEmpty()){
-            return ResponseEntity.notFound().build();
+        UserEntity p= entityService.loadUserById(id);
+        if(p!= null && id.equals(user.getId()) || user.getUserRoles().equals(UserRoles.ADMIN)){
+            return ResponseEntity.ok().body(userDtoConverter.UserEntityToGetUserDto(p));
         }else{
-            List<GetPropietarioViviendaDTO> prop= propietario.stream()
-                    .map(propietarioConverterDTO::createPropietarioinPropietarioViviendaDTO)
-                    .collect(Collectors.toList());
-            return ResponseEntity.ok().body(prop);
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
     }
 

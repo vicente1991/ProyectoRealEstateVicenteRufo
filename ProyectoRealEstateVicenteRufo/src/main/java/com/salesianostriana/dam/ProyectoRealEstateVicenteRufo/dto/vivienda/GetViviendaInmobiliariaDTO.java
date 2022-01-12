@@ -4,6 +4,7 @@ import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.dto.inmobiliaria.G
 import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.dto.interesa.GetInteresaDTO;
 import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.dto.propietario.GetPropietarioDTO;
 import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.model.TipoVivienda;
+import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.users.dto.GetUserDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,7 +19,7 @@ public class GetViviendaInmobiliariaDTO extends GetViviendaDTO{
 
     private Long idInmobiliaria;
 
-    public GetViviendaInmobiliariaDTO(Long id, String titulo, String descripcion, String avatar, String latlng, String direccion, String codigoPostal, String poblacion, String provincia, TipoVivienda tipo, double precio, double numHabitaciones, double metrosCuadrados, double numBanos, boolean tienePiscina, boolean tieneAscensor, boolean tieneGaraje, GetPropietarioDTO propietario, GetInmobiliariaDTO inmobiliaria, int meInteresas, List<GetInteresaDTO> interesas, String nombreInmo, Long idInmobiliaria) {
+    public GetViviendaInmobiliariaDTO(Long id, String titulo, String descripcion, String avatar, String latlng, String direccion, String codigoPostal, String poblacion, String provincia, TipoVivienda tipo, double precio, double numHabitaciones, double metrosCuadrados, double numBanos, boolean tienePiscina, boolean tieneAscensor, boolean tieneGaraje, GetUserDto propietario, GetInmobiliariaDTO inmobiliaria, int meInteresas, List<GetInteresaDTO> interesas, String nombreInmo, Long idInmobiliaria) {
         super(id, titulo, descripcion, avatar, latlng, direccion, codigoPostal, poblacion, provincia, tipo, precio, numHabitaciones, metrosCuadrados, numBanos, tienePiscina, tieneAscensor, tieneGaraje, propietario, inmobiliaria, meInteresas, interesas);
         this.nombreInmo = nombreInmo;
         this.idInmobiliaria = idInmobiliaria;

@@ -4,6 +4,7 @@ import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.dto.inmobiliaria.G
 import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.dto.interesa.GetInteresaDTO;
 import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.dto.propietario.GetPropietarioDTO;
 import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.model.TipoVivienda;
+import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.users.dto.GetUserDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -34,7 +35,7 @@ public class GetViviendaDTO {
     private boolean tienePiscina;
     private boolean tieneAscensor;
     private boolean tieneGaraje;
-    private GetPropietarioDTO propietario;
+    private GetUserDto propietario;
     private GetInmobiliariaDTO inmobiliaria;
     private int meInteresas;
     private List<GetInteresaDTO> interesas = new ArrayList<>();

@@ -1,8 +1,10 @@
 package com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.salesianostriana.dam.ProyectoRealEstateVicenteRufo.users.model.UserEntity;
 import lombok.*;
-import net.minidev.json.annotate.JsonIgnore;
+
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -69,7 +71,7 @@ public class Vivienda implements Serializable {
     @ManyToOne
     @JoinColumn(name = "propietario_id")
     @JsonIgnore
-    private Propietario propietario;
+    private UserEntity propietario;
 
     @Builder.Default
     @OneToMany(mappedBy = "vivienda")
@@ -92,10 +94,6 @@ public class Vivienda implements Serializable {
         inmobiliaria = null;
     }
 
-    public void addPropietario(Propietario p){
-        this.propietario = p;
-        p.getViviendaList().add(this);
-    }
 
     public void removePropietario(Propietario p) {
         p.getViviendaList().remove(this);
