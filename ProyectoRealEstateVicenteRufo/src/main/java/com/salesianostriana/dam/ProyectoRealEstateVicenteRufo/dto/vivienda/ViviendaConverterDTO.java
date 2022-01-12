@@ -41,8 +41,8 @@ public class ViviendaConverterDTO {
                 .direccion(v.getDireccion())
                 .latlng(v.getLatlng())
                 .numHabitaciones(v.getNumHabitaciones())
-                .metrosCuadrados(v.getMCuadrados())
-                .numBanos(v.getNumBanios())
+                .metrosCuadrados(v.getMetrosCuadrados())
+                .numBanos(v.getNumBanos())
                 .precio(v.getPrecio())
                 .tieneAscensor(v.isTieneAscensor())
                 .tieneGaraje(v.isTieneGaraje())
@@ -65,7 +65,8 @@ public class ViviendaConverterDTO {
         g.setCodigoPostal(v.getCodigoPostal());
         g.setAvatar(v.getAvatar());
         g.setLatlng(v.getLatlng());
-        g.setMetrosCuadrados(v.getMCuadrados());
+        g.setMetrosCuadrados(v.getMetrosCuadrados());
+        g.setNumBanos(v.getNumBanos());
         g.setNumHabitaciones(v.getNumHabitaciones());
         g.setTipo(v.getTipoVivienda());
         g.setMeInteresas(v.getInteresaList().size());
@@ -78,10 +79,8 @@ public class ViviendaConverterDTO {
 
     public Vivienda createViviendaDTOtoVivienda(CreateViviendaDTO c, UserEntity user){
 
-    TipoVivienda t = TipoVivienda.valueOf(c.getTipo().toString());
     Vivienda v = new Vivienda();
 
-    v.setId(c.getId());
     v.setTitulo(c.getTitulo());
     v.setDescripcion(c.getDescripcion());
     v.setAvatar(c.getAvatar());
@@ -90,16 +89,15 @@ public class ViviendaConverterDTO {
     v.setCodigoPostal(c.getCodigoPostal());
     v.setPoblacion(c.getPoblacion());
     v.setProvincia(c.getProvincia());
-    v.setTipoVivienda(t);
+    v.setTipoVivienda(v.getTipoVivienda());
     v.setCodigoPostal(c.getCodigoPostal());
     v.setPrecio(c.getPrecio());
     v.setNumHabitaciones(c.getNumHabitaciones());
-    v.setMCuadrados(c.getMCuadrados());
-    v.setNumBanios(c.getNumBanios());
+    v.setMetrosCuadrados(c.getMCuadrados());
+    v.setNumBanos(c.getNumBanios());
     v.setTieneAscensor(c.isTieneAscensor());
     v.setTieneGaraje(c.isTieneGaraje());
     v.setTienePiscina(c.isTienePiscina());
-    v.setInmobiliaria(inmobiliariaService.findById(c.getInmobiliaria().getId()).get());
     v.setPropietario(user);
     return v;
     }
@@ -115,8 +113,8 @@ public class ViviendaConverterDTO {
                 .provincia(gv.getProvincia())
                 .latlng(gv.getLatlng())
                 .tipoVivienda(tipo)
-                .mCuadrados(gv.getMetrosCuadrados())
-                .numBanios(gv.getNumBanios())
+                .metrosCuadrados(gv.getMetrosCuadrados())
+                .numBanos(gv.getNumBanios())
                 .numHabitaciones(gv.getNumHabitaciones())
                 .avatar(gv.getAvatar())
                 .tieneAscensor(gv.isTieneAscensor())
@@ -144,7 +142,7 @@ public class ViviendaConverterDTO {
                 .avatar(v.getAvatar())
                 .direccion(v.getDireccion())
                 .codigoPostal(v.getCodigoPostal())
-                .numBanios(v.getNumBanios())
+                .numBanios(v.getNumBanos())
                 .numHabitaciones(v.getNumHabitaciones())
                 .provincia(v.getProvincia())
                 .poblacion(v.getPoblacion())
@@ -155,7 +153,7 @@ public class ViviendaConverterDTO {
                 .tipo(v.getTipoVivienda())
                 .tienePiscina(v.isTienePiscina())
                 .tieneAscensor(v.isTieneAscensor())
-                .metrosCuadrados(v.getMCuadrados())
+                .metrosCuadrados(v.getMetrosCuadrados())
                 .precio(v.getPrecio())
                 .nombre(v.getPropietario().getNombre())
                 .apellidos(v.getPropietario().getApellidos())

@@ -399,14 +399,14 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/vivienda/26",
+							"raw": "localhost:8080/vivienda/2",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
 								"vivienda",
-								"26"
+								"2"
 							]
 						}
 					},

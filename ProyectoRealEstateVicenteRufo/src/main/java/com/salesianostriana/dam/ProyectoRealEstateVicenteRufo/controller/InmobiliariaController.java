@@ -190,7 +190,7 @@ public class InmobiliariaController {
                     content = @Content),
     })
     @PostMapping("{id}/gestor")
-    public ResponseEntity<GetUserDto> nuevoGestor(@PathVariable Long id, @AuthenticationPrincipal UserEntity user, @RequestBody CreateUserDto dto) {
+    public ResponseEntity<GetUserDto> nuevoGestor(@AuthenticationPrincipal UserEntity user, @RequestBody CreateUserDto dto) {
         UserEntity g = userEntityService.saveGestor(dto);
         if (g == null) {
             return ResponseEntity.badRequest().build();

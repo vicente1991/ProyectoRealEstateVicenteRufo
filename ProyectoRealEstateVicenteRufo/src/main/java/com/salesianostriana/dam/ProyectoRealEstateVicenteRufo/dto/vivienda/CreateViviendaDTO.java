@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor @AllArgsConstructor
 public class CreateViviendaDTO {
 
-    private Long id;
+
     private String titulo,descripcion,avatar,latlng,direccion,codigoPostal,poblacion,provincia;
     private TipoVivienda tipo;
     private double precio;

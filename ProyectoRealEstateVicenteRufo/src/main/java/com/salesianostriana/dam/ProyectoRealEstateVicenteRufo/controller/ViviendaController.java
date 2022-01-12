@@ -139,7 +139,7 @@ public class ViviendaController {
 
         Optional<Vivienda> viv= viviendaService.findById(id);
 
-        if (viv.isEmpty() && id.equals(viv.get().getId()) || user.getUserRoles().equals(UserRoles.ADMIN)) {
+        if (viv.isEmpty() && id.equals(viv.get().getId())) {
             return ResponseEntity.notFound().build();
         }else{
             Vivienda vNew= new Vivienda();

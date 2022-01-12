@@ -40,7 +40,7 @@ public class Vivienda implements Serializable {
     private Long id;
 
     private String titulo,descripcion,direccion,avatar,latlng,poblacion,provincia;
-    private double precio,mCuadrados;
+    private double precio,metrosCuadrados;
 
     @Column(name = "codigoPostal")
     private String codigoPostal;
@@ -49,7 +49,7 @@ public class Vivienda implements Serializable {
     private double numHabitaciones;
 
     @Column(name = "nBanios")
-    private double numBanios;
+    private double numBanos;
 
     @Column(name = "tienePiscina")
     private boolean tienePiscina;
